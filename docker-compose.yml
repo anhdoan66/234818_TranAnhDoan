@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  backend:
+    image: anhdoan66/backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mern-backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGODB_URI=mongodb+srv://anhdoan66:6666@cluster0.furlobw.mongodb.net/234818_TranAnhDoan?retryWrites=true&w=majority
+    networks:
+      - book-network
+
+  frontend:
+    image: anhdoan66/frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: mern-frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - book-network
+
+networks:
+  book-network:
+    driver: bridge
